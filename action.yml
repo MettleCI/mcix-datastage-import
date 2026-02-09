@@ -1,0 +1,51 @@
+# action.yml
+name: 'MCIX datastage import action'
+author: 'Data Migrators Pty Ltd'
+description: 'Runs mcix datastage import'
+branding:
+  icon: 'log-in'
+  color: 'blue'
+
+inputs:
+
+  api-key:
+    description: 'API key for authentication'
+    required: true
+
+  url:
+    description: 'URL of the DataStage server'
+    required: true
+
+  user:
+    description: 'Username for authentication'
+    required: true
+
+  assets:
+    description: 'Path to the DataStage assets to import'
+    required: false
+    default: ""
+
+  project:
+    description: 'DataStage project name'
+    required: false     # Required when -project-id not specified
+    default: ""
+
+  project-id:
+    description: 'DataStage project id'
+    required: false     # Required when -project not specified
+    default: ""
+
+outputs:
+  return-code:
+    description: 'The return code of the command'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    PARAM_API_KEY: ${{ inputs.api-key }}
+    PARAM_URL: ${{ inputs.url }}
+    PARAM_USER: ${{ inputs.user }}
+    PARAM_ASSETS: ${{ inputs.assets }}
+    PARAM_PROJECT: ${{ inputs.project }}
+    PARAM_PROJECT_ID: ${{ inputs.project-id }}
