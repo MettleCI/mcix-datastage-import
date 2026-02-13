@@ -142,7 +142,7 @@ write_step_summary() {
 
   # Only attempt a summary if GitHub provided a writable summary file
   if [ -n "${GITHUB_STEP_SUMMARY:-}" ] && [ -w "$GITHUB_STEP_SUMMARY" ]; then
-    "$MCIX_JUNIT_CMD" "$PARAM_REPORT" "MCIX DataStage Compile" >>"$GITHUB_STEP_SUMMARY" || true
+    "$MCIX_JUNIT_CMD" "$MCIX_JUNIT_CMD_OPTIONS" "MCIX DataStage Compile" >>"$GITHUB_STEP_SUMMARY" || true
   else
     # GITHUB_STEP_SUMMARY is not available/writable (?), so write a warning to stderr 
     # but don't fail the action since the main command did run and produce a report.
