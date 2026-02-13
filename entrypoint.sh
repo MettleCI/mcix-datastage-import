@@ -7,15 +7,30 @@
 # ██║ ╚═╝ ██║███████╗   ██║      ██║   ███████╗███████╗╚██████╗██║
 # ╚═╝     ╚═╝╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝ ╚═════╝╚═╝
 # MettleCI DevOps for DataStage       (C) 2025-2026 Data Migrators
+#      _       _            _
+#   __| | __ _| |_ __ _ ___| |_ __ _  __ _  ___
+#  / _` |/ _` | __/ _` / __| __/ _` |/ _` |/ _ \
+# | (_| | (_| | || (_| \__ \ || (_| | (_| |  __/
+#  \__,_|\__,_|\__\__,_|___/\__\__,_|\__, |\___|
+#                                    |___/
+#  _                            _
+# (_)_ __ ___  _ __   ___  _ __| |_
+# | | '_ ` _ \| '_ \ / _ \| '__| __|
+# | | | | | | | |_) | (_) | |  | |_
+# |_|_| |_| |_| .__/ \___/|_|   \__|
+#             |_|
 
 set -eu
 
 # -----
 # Setup
 # -----
-MCIX_BIN_DIR="/usr/share/mcix/bin"
-MCIX_CMD="$MCIX_BIN_DIR/mcix"
-PATH="$PATH:$MCIX_BIN_DIR"
+export MCIX_BIN_DIR="/usr/share/mcix/bin"
+export MCIX_CMD="mcix" 
+export MCIX_JUNIT_CMD="/usr/share/mcix/mcix-junit-to-summary"
+export MCIX_JUNIT_CMD_OPTIONS="--annotations"
+# Make us immune to runner differences or potential base-image changes
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$MCIX_BIN_DIR"
 
 : "${GITHUB_OUTPUT:?GITHUB_OUTPUT must be set}"
 
@@ -46,6 +61,21 @@ normalise_bool() {
     1|true|TRUE|yes|YES|on|ON) echo 1 ;;
     0|false|FALSE|no|NO|off|OFF|"") echo 0 ;;
     *) die "Invalid boolean: $1" ;;
+  esac
+}
+
+# Ensure report file lands in the GitHub workspace so it survives container exit
+resolve_report_path() {
+  p="$1"
+
+  # If already absolute, keep it
+  case "$p" in
+    /*) echo "$p" ;;
+    *)
+      # If relative, anchor it under workspace
+      base="${GITHUB_WORKSPACE:-/github/workspace}"
+      echo "${base}/${p#./}"
+      ;;
   esac
 }
 
@@ -99,93 +129,25 @@ fi
 # Step summary
 # ------------
 write_step_summary() {
-  rc=$1
-
-  status_emoji="✅"
-  status_title="Success"
-  [ "$rc" -ne 0 ] && status_emoji="❌" && status_title="Failure"
-
-  project_display="${PROJECT:-<none>}"
-  [ -n "${PROJECT_ID:-}" ] && project_display="${project_display} (ID: ${PROJECT_ID})"
-
-  {
-    cat <<EOF
-### ${status_emoji} MCIX DataStage Import – ${status_title}
-
-| Property    | Value                          |
-|------------|---------------------------------|
-| **Project**  | \`${project_display}\`        |
-| **Assets**   | \`${PARAM_ASSETS:-<none>}\`   |
-EOF
-
-    if [ -n "${CMD_OUTPUT:-}" ]; then
-      #printf '\n### MettleCI Command Output\n\n'
-      #echo '```text'
-      #printf '%s\n' "$CMD_OUTPUT" 
-      #echo '```'
-      #echo
-
-      echo '<details>'
-      echo '<summary>Imported assets</summary>'
-      echo
-      echo '| Asset | Type | Status |' >>"$GITHUB_STEP_SUMMARY"
-      echo '|-------|------|--------|' >>"$GITHUB_STEP_SUMMARY"
-
-      printf '%s\n' "$CMD_OUTPUT" | awk '
-        BEGIN { in_assets = 0 }
-
-        /^Deploying project containing/ {
-          in_assets = 1
-          next
-        }
-
-        in_assets && /^Import report\(s\):/ {
-          exit
-        }
-
-        in_assets && /^[[:space:]]*\*/ {
-          line = $0
-
-          # strip leading "* Import "
-          sub(/^[[:space:]]*\*[[:space:]]*Import[[:space:]]+/, "", line)
-
-          asset_type = line
-          status = ""
-
-          # extract status: "... - STATUS"
-          if (match(asset_type, /[[:space:]]-[[:space:]]([A-Z_]+)$/)) {
-            status = substr(asset_type, RSTART + 3, RLENGTH - 3)
-            asset_type = substr(asset_type, 1, RSTART - 1)
-            sub(/[[:space:]]*$/, "", asset_type)
-          }
-
-          asset = asset_type
-          type  = ""
-
-          # extract type in parentheses
-          if (match(asset_type, /\(([^()]*)\)[[:space:]]*$/)) {
-            type  = substr(asset_type, RSTART + 1, RLENGTH - 2)
-            asset = substr(asset_type, 1, RSTART - 1)
-            
-            # Trim whitespace
-            sub(/[[:space:]]*$/, "", asset)
-
-            # 🔥 NEW FIX: Remove any leading "(" from type
-            sub(/^[[:space:]]*\(/, "", type)
-
-            # Trim whitespace again
-            sub(/^[[:space:]]+/, "", type)
-            sub(/[[:space:]]+$/, "", type)
-          }
-
-          printf("| %s | %s | %s |\n", asset, type, status)
-        }
-      '
-
-      echo
-      echo '</details>'
+  if [ -n "${junit_xml:-}" ] && [ -f "$junit_xml" ]; then
+    if [ -x "$MCIX_JUNIT_CMD" ]; then
+      "$MCIX_JUNIT_CMD" "$MCIX_JUNIT_CMD_OPTIONS" "$junit_xml" "$GITHUB_STEP_SUMMARY" || \
+        echo "Warning: JUnit summarizer failed" >&2
+    else
+      echo "Warning: JUnit summarizer not found or not executable: $MCIX_JUNIT_CMD" >&2
     fi
-  } >>"$GITHUB_STEP_SUMMARY"
+  else
+    echo "Warning: JUnit XML file not found: ${junit_xml:-<unset>}" >&2
+  fi
+
+  # Only attempt a summary if GitHub provided a writable summary file
+  if [ -n "${GITHUB_STEP_SUMMARY:-}" ] && [ -w "$GITHUB_STEP_SUMMARY" ]; then
+    "$MCIX_JUNIT_CMD" "$PARAM_REPORT" "MCIX DataStage Compile" >>"$GITHUB_STEP_SUMMARY" || true
+  else
+    # GITHUB_STEP_SUMMARY is not available/writable (?), so write a warning to stderr 
+    # but don't fail the action since the main command did run and produce a report.
+    echo "GitHub didn't provide a writable summary file; skipping junit summary generation" >&2
+  fi
 }
 
 # ---------
@@ -196,6 +158,8 @@ write_return_code_and_summary() {
   rc=${MCIX_STATUS:-$?}
 
   echo "return-code=$rc" >>"$GITHUB_OUTPUT"
+  # Note that the generated junit file is used internally to generate a well
+  # formatted GitHub summary, and is not intended as a user-consumable artifact
 
   [ -z "${GITHUB_STEP_SUMMARY:-}" ] && return
 
@@ -215,12 +179,12 @@ fi
 
 # Run the command, capture its output and status, but don't let `set -e` kill us.
 set +e
-CMD_OUTPUT="$("$@" 2>&1)"
+"$@" 2>&1
 MCIX_STATUS=$?
 set -e
 
-# Echo original command output into the job logs
-printf '%s\n' "$CMD_OUTPUT"
+# write outputs / summary based on MCIX_STATUS 
+echo "return-code=$MCIX_STATUS" >> "$GITHUB_OUTPUT"
 
 # Let the trap handle outputs & summary using MCIX_STATUS
 exit "$MCIX_STATUS"
