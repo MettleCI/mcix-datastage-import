@@ -25,7 +25,9 @@ set -eu
 
 # Resolve where this script lives
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+echo $0
 echo $SCRIPT_DIR
+pwd
 # Import utility functions from lib/common.sh
 . "../lib/common.sh"
 
