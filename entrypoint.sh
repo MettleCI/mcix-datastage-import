@@ -23,14 +23,9 @@
 
 set -eu
 
-# Resolve where this script lives
+# Import MettleCI GitHub Actions utility functions
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-echo $0
-echo $SCRIPT_DIR
-pwd
-ls -l
-# Import utility functions from lib/common.sh
-. "lib/common.sh"
+. "$SCRIPT_DIR/../lib/common.sh"
 
 # -----
 # Setup
