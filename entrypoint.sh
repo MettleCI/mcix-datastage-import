@@ -94,7 +94,7 @@ validate_project
 if [ "$(normalise_bool "${PARAM_INCLUDE_JOB_IN_TEST_NAME:-0}")" -eq 1 ]; then
   set -- "$@" -include-job-in-test-name
 fi
-
+ 
 # ------------
 # Step summary
 # ------------
