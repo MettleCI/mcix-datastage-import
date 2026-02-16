@@ -24,6 +24,7 @@
 set -eu
 
 # Import MettleCI GitHub Actions utility functions
+ls -l /usr/share/
 ls -l /usr/share/mcix/
 . "/usr/share/mcix/lib/common.sh"
 
