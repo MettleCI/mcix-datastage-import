@@ -145,8 +145,6 @@ trap write_return_code_and_summary EXIT
 # -------
 # Execute
 # -------
-echo "Executing: $*"
-
 # Check the repository has been checked out
 if [ ! -e "/github/workspace/.git" ] && [ ! -e "$ASSETS_PATH" ]; then
   die "Repo contents not found in /github/workspace. Did you forget to run actions/checkout before this action?"
