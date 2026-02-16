@@ -87,10 +87,7 @@ validate_project
 [ -n "$PROJECT" ]    && set -- "$@" -project "$PROJECT"
 [ -n "$PROJECT_ID" ] && set -- "$@" -project-id "$PROJECT_ID"
 
-# Optional scalar flags
-# None in this action
-
-# Optional boolean flags (with parameter variation handling)
+# Optional boolean flags
 if [ "$(normalise_bool "${PARAM_INCLUDE_JOB_IN_TEST_NAME:-0}")" -eq 1 ]; then
   set -- "$@" -include-job-in-test-name
 fi
@@ -132,7 +129,7 @@ write_return_code_and_summary() {
   # Prefer MCIX_STATUS if set; fall back to $?
   rc=${MCIX_STATUS:-$?}
 
-  echo "return-code=$rc" >>"$GITHUB_OUTPUT"
+  echo "return-code=$rc" >> "$GITHUB_OUTPUT"
   # Note that the generated junit file is used internally to generate a well
   # formatted GitHub summary, and is not intended as a user-consumable artifact
 
