@@ -25,7 +25,7 @@ set -eu
 
 # Import MettleCI GitHub Actions utility functions
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-. "$SCRIPT_DIR/../lib/common.sh"
+. "lib/common.sh"
 
 # -----
 # Setup
