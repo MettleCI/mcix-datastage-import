@@ -24,11 +24,7 @@
 set -eu
 
 # Import MettleCI GitHub Actions utility functions
-SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-echo $0
-pwd
-ls -l
-. "lib/common.sh"
+. "/usr/share/mcix/lib/common.sh"
 
 # -----
 # Setup
