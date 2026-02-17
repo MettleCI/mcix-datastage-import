@@ -3,9 +3,12 @@ name: 'MCIX datastage import action'
 author: 'Data Migrators Pty Ltd'
 description: 'Runs mcix datastage import'
 branding:
-  icon: 'log-in'
+  icon: 'zap'
   color: 'blue'
 
+# Note that true/false boolean inputs accept:
+# 1, true, TRUE, yes, YES, on, ON, and 
+# 0, false, FALSE, no, NO, off, OFF
 inputs:
 
   api-key:
