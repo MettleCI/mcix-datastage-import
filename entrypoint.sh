@@ -110,7 +110,8 @@ write_step_summary() {
 
   # Generate summary
   else
-    gh_notice "Generating step summary" "Running JUnit summarizer and appending to GITHUB_STEP_SUMMARY."
+    # Commenting out for now (too verbose.)
+    # gh_notice "Generating datastage import step summary" "Running JUnit summarizer and appending to GITHUB_STEP_SUMMARY."
 
     # mcix-junit-to-summary [--annotations] [--max-annotations N] <junit.xml> [title]
     echo "Executing: $MCIX_JUNIT_CMD $MCIX_JUNIT_CMD_OPTIONS $REPORT_PATH \"MCIX DataStage Import\""
