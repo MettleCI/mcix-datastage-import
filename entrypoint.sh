@@ -33,6 +33,13 @@ set -eu
 echo "Environment variables at start of entrypoint.sh:"
 env | sort
 
+echo "CP4DHostName: ${{ vars.CP4DHOSTNAME }}"
+echo "CP4DUserName: ${{ vars.CP4DUSERNAME }}"
+echo " BaseProjectName: ${{ vars.BASEPROJECTNAME }}"
+echo "CP4DKey: ${{ secrets.CP4DKey }}"
+
+
+
 # -----
 # Setup
 # -----
