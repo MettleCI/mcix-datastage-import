@@ -26,6 +26,44 @@ set -eu
 # Import MettleCI GitHub Actions utility functions
 . "/usr/share//mcix/common.sh"
 
+# -------------
+# Investigation
+# -------------
+
+echo "Environment: $ENVID"
+echo "API URL: $API_URL"
+echo "USERNAME: $USERNAME"
+
+echo "ANALYSIS_REPO_ACCESS: $ANALYSIS_REPO_ACCESS"
+
+echo "AGENTMETTLECMD"
+echo $AGENTMETTLECMD
+
+echo "AGENTMETTLEHOME"
+echo $AGENTMETTLEHOME
+
+echo "AGENTMETTLEXCMD"
+echo $AGENTMETTLEXCMD
+
+echo "ALTERNATEJAVAPATH"
+echo $ALTERNATEJAVAPATH
+
+echo "CP4DSTORAGES3BUCKET"
+echo $CP4DSTORAGES3BUCKET
+
+echo "MCIXACTIONVERSION"
+echo $MCIXACTIONVERSION
+
+echo "MCIXCMD"
+echo $MCIXCMD
+
+echo "MCIXHOME"
+echo $MCIXHOME
+
+echo "PSSPECIALHANDLING"
+echo $PSSPECIALHANDLING
+
+
 # -----
 # Setup
 # -----
