@@ -30,9 +30,9 @@ set -eu
 # Investigation
 # -------------
 
-echo "Environment: $ENVID"
-echo "API URL: $API_URL"
-echo "USERNAME: $USERNAME"
+#echo "Environment: $ENVID"
+#echo "API URL: $API_URL"
+#echo "USERNAME: $USERNAME"
 
 echo "ANALYSIS_REPO_ACCESS: $ANALYSIS_REPO_ACCESS"
 
