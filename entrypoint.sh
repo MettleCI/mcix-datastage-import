@@ -30,7 +30,8 @@ set -eu
 # Investigation
 # -------------
 
-env | sort
+echo "Environment variables at start of entrypoint.sh:"  >> "$GITHUB_OUTPUT"
+env | sort >> "$GITHUB_OUTPUT"
 
 # -----
 # Setup
