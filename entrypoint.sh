@@ -26,24 +26,6 @@ set -eu
 # Import MettleCI GitHub Actions utility functions
 . "/usr/share//mcix/common.sh"
 
-# -------------
-# Investigation
-# -------------
-
-echo "Environment variables at start of entrypoint.sh:"
-# env | sort
-
-echo "CP4DHostName: ${{ vars.CP4DHOSTNAME }}" 
-echo "CP4DUserName: ${{ vars.CP4DUSERNAME }}"
-echo " BaseProjectName: ${{ vars.BASEPROJECTNAME }}"
-echo "CP4DKey: ${{ secrets.CP4DKey }}"
-
-echo "CP4DHostName: ${{ vars.CP4DHOSTNAME }}" >> "$GITHUB_STEP_SUMMARY"
-echo "CP4DUserName: ${{ vars.CP4DUSERNAME }}" >> "$GITHUB_STEP_SUMMARY"
-echo " BaseProjectName: ${{ vars.BASEPROJECTNAME }}" >> "$GITHUB_STEP_SUMMARY"
-echo "CP4DKey: ${{ secrets.CP4DKey }}" >> "$GITHUB_STEP_SUMMARY"
-
-
 # -----
 # Setup
 # -----
