@@ -1,4 +1,24 @@
 # action.yml
+
+# ███╗   ███╗███████╗████████╗████████╗██╗     ███████╗ ██████╗██╗
+# ████╗ ████║██╔════╝╚══██╔══╝╚══██╔══╝██║     ██╔════╝██╔════╝██║
+# ██╔████╔██║█████╗     ██║      ██║   ██║     █████╗  ██║     ██║
+# ██║╚██╔╝██║██╔══╝     ██║      ██║   ██║     ██╔══╝  ██║     ██║
+# ██║ ╚═╝ ██║███████╗   ██║      ██║   ███████╗███████╗╚██████╗██║
+# ╚═╝     ╚═╝╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝ ╚═════╝╚═╝
+# MettleCI DevOps for DataStage       (C) 2025-2026 Data Migrators
+#      _       _            _
+#   __| | __ _| |_ __ _ ___| |_ __ _  __ _  ___
+#  / _` |/ _` | __/ _` / __| __/ _` |/ _` |/ _ \
+# | (_| | (_| | || (_| \__ \ || (_| | (_| |  __/
+#  \__,_|\__,_|\__\__,_|___/\__\__,_|\__, |\___|
+#  _                            _     |___/
+# (_)_ __ ___  _ __   ___  _ __| |_
+# | | '_ ` _ \| '_ \ / _ \| '__| __|
+# | | | | | | | |_) | (_) | |  | |_
+# |_|_| |_| |_| .__/ \___/|_|   \__|
+#             |_|
+
 name: 'MCIX datastage import action'
 author: 'Data Migrators Pty Ltd'
 description: 'Runs mcix datastage import'
@@ -43,8 +63,8 @@ outputs:
     description: 'The return code of the command'
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: Dockerfile
   env:
     PARAM_API_KEY: ${{ inputs.api-key }}
     PARAM_URL: ${{ inputs.url }}
