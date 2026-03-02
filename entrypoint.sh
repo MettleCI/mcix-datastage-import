@@ -148,11 +148,26 @@ if [ ! -e "/github/workspace/.git" ] && [ ! -e "$ASSETS_PATH" ]; then
   die "Repo contents not found in /github/workspace. Did you forget to run actions/checkout before this action?"
 fi
 
+# Capture output so we can detect "It has been logged (ID ...)" failures.
+tmp_out="$(mktemp)"
+cleanup() { rm -f "$tmp_out"; }
+
+# Combine summary/output writing + temp cleanup in a single EXIT trap.
+trap 'write_return_code_and_summary; cleanup' EXIT
+
 # Run the command, capture its output and status, but don't let `set -e` kill us.
 set +e
 "$@" 2>&1
 MCIX_STATUS=$?
 set -e
 
-# Let the trap handle writing outputs & step summary
+# If the known "logged error" signature occurred, stash details for the summary.
+MCIX_LOGGED_ERROR_ID=""
+if mcix_has_logged_error "$tmp_out"; then
+  MCIX_LOGGED_ERROR_ID="$(mcix_extract_logged_error_id "$tmp_out")"
+  # Treat logged errors as failures for the purpose of the step summary, even if the command itself didn't return a non-zero code.
+  MCIX_STATUS=1
+fi
+
+# Let the trap handle outputs & summary using MCIX_STATUS
 exit "$MCIX_STATUS"
