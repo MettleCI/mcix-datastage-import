@@ -34,7 +34,7 @@ export MCIX_BIN_DIR="/usr/share/mcix/bin"
 export MCIX_LOG_DIR="/usr/share/mcix"
 export MCIX_JUNIT_CMD="/usr/share/mcix/mcix-junit-to-summary"
 export MCIX_JUNIT_CMD_OPTIONS="--annotations"
-export PATH="$PATH:$MCIX_BIN_DIR"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$MCIX_BIN_DIR"
 
 : "${GITHUB_OUTPUT:?GITHUB_OUTPUT must be set}"
 
