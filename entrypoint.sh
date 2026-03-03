@@ -63,7 +63,7 @@ ASSETS_PATH="$(resolve_workspace_path "${PARAM_ASSETS}")"
 #   report_display="${REPORT_PATH#${GITHUB_WORKSPACE:-/github/workspace}/}"
 
 # Temporary until 'mcix datastage import' provides us with a file
-REPORT_PATH="$(pwd)/junit.xml"
+REPORT_PATH="$(pwd)/${GITHUB_RUN_ID}.xml"
 cat <<'EOF' > "$REPORT_PATH"
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite name="ExampleTestSuite" tests="1" failures="0" errors="0" skipped="0" time="0.001">
@@ -132,12 +132,12 @@ write_step_summary() {
   else
     # Generate summary
     # mcix-junit-to-summary [--annotations] [--max-annotations N] <junit.xml> [title]
-    echo "Executing: $MCIX_JUNIT_CMD $MCIX_JUNIT_CMD_OPTIONS $REPORT_PATH \"MCIX DataStage Import\""
+    echo "Executing: $MCIX_JUNIT_CMD $MCIX_JUNIT_CMD_OPTIONS $REPORT_PATH \"$MCIX_CMD_NAME\""
     "$MCIX_JUNIT_CMD" \
       "$MCIX_JUNIT_CMD_OPTIONS" \
       "$REPORT_PATH" \
-      "MCIX DataStage Import" >> "$GITHUB_STEP_SUMMARY" || \
-      gh_warn "JUnit summarizer failed" "Continuing without failing the action."
+      "${MCIX_CMD_NAME}"  >> "$GITHUB_STEP_SUMMARY" || \
+      gh_warn "JUnit summarizer for '${MCIX_CMD_NAME}' failed" "Continuing without failing the action."
   fi
 }
 
@@ -167,7 +167,7 @@ if [ ! -e "/github/workspace/.git" ] && [ ! -e "$ASSETS_PATH" ]; then
   die "Repo contents not found in /github/workspace. Did you forget to run actions/checkout before this action?"
 fi
 
-# Capture output so we can detect "It has been logged (ID ...)" failures.
+# Prepare a file to capture output so we can detect "It has been logged (ID ...)" failures.
 tmp_out="$(mktemp)"
 cleanup() { rm -f "$tmp_out"; }
 
