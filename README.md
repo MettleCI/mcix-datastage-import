@@ -42,9 +42,9 @@ Import DataStage NextGen assets into a target project using MCIX.
 See https://nextgen.mettleci.io/mettleci-cli/datastage-namespace/#datastage-import
 
 <!-- BEGIN MCIX-ACTION-DOCS -->
-# MCIX datastage import action
+# MCIX Datastage Import Action
 
-Runs mcix datastage import
+Import assets into an IBM DataStage project on IBM Software Hub (Cloud Pak) using the MettleCI MCIX CLI
 
 > Namespace: `datastage`<br>
 > Action: `import`<br>
@@ -67,7 +67,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Run MCIX datastage import action
+      - name: Run MCIX Datastage Import Action
         id: datastage-import
         uses: ${{ github.repository }}/datastage/import@v1
         with:
