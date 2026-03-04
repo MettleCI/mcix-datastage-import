@@ -19,11 +19,11 @@
 # |_|_| |_| |_| .__/ \___/|_|   \__|
 #             |_|
 
-name: 'MCIX datastage import action'
+name: 'MCIX Datastage Import Action'
 author: 'Data Migrators Pty Ltd'
-description: 'Runs mcix datastage import'
+description: 'Import assets into an IBM DataStage project on IBM Software Hub (Cloud Pak) using the MettleCI MCIX CLI'
 branding:
-  icon: 'zap'
+  icon: 'download'
   color: 'blue'
 
 # Note that true/false boolean inputs accept:
