@@ -19,7 +19,7 @@
 # |_|_| |_| |_| .__/ \___/|_|   \__|
 #             |_|
 
-name: 'MCIX Datastage Import Action'
+name: 'MCIX Datastage Import'
 author: 'Data Migrators Pty Ltd'
 description: 'Import assets into an IBM DataStage project on IBM Software Hub (Cloud Pak) using the MettleCI MCIX CLI'
 branding:
