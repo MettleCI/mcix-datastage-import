@@ -77,6 +77,7 @@ jobs:
           # assets: <optional>
           # project: <optional>
           # project-id: <optional>
+          # additionalArgs: <optional>
 ```
 
 ---
@@ -98,6 +99,7 @@ jobs:
 | `assets` | ❌ |  | Path to the DataStage assets to import |
 | `project` | ❌ |  | DataStage project name |
 | `project-id` | ❌ |  | DataStage project id |
+| `additionalArgs` | ❌ |  | Additional raw arguments to append to the mcix command |
 
 ---
 
