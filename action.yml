@@ -58,6 +58,10 @@ inputs:
     required: false     # Required when -project not specified
     default: ""
 
+  additionalArgs:
+    description: 'Additional raw arguments to append to the mcix command'
+    required: false
+
 outputs:
   return-code:
     description: 'The return code of the command'
@@ -72,3 +76,4 @@ runs:
     PARAM_ASSETS: ${{ inputs.assets }}
     PARAM_PROJECT: ${{ inputs.project }}
     PARAM_PROJECT_ID: ${{ inputs.project-id }}
+    PARAM_ADDITIONAL_ARGS: ${{ inputs.additionalArgs }}

@@ -97,6 +97,15 @@ if [ "$(normalise_bool "${PARAM_INCLUDE_JOB_IN_TEST_NAME:-0}")" -eq 1 ]; then
   set -- "$@" -include-job-in-test-name
 fi
  
+ADDITIONAL_ARGS="${PARAM_ADDITIONAL_ARGS:-}"
+if [ -n "$ADDITIONAL_ARGS" ]; then
+  readarray -t args < <(printf "%s" "$ADDITIONAL_ARGS" | xargs -n 1)
+
+  for arg in "${args[@]}"; do
+    set -- "$@" $arg
+  done
+fi
+
 # ------------
 # Step summary
 # ------------
@@ -110,6 +119,15 @@ write_step_summary() {
         # Capture the log entry and include it in the summary for visibility. 
         grep "(ID ${MCIX_LOGGED_ERROR_ID}" ${MCIX_LOG_DIR}/*.log | sed -n 's/.*(ID [^)]*): //p' \
           || echo "(Failed to extract log details for ID ${MCIX_LOGGED_ERROR_ID})"
+
+        # Display the contents of the mcix command's log file. (collapsed by default)
+        echo '<details>'
+        echo '<summary>Complete Command Log</summary>'
+        echo # A blank line after the <summary> tag is required by GitHub to format the content correctly
+        echo '```'
+        cat "${MCIX_LOG_DIR}/cli.$(date +%F).log"
+        echo '```'
+        echo '</details>'
       fi
     } >>"$GITHUB_STEP_SUMMARY"
     # Set a workflow error annotation for visibility. This will show up in the 'Annotations' tab 
