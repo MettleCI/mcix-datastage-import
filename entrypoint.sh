@@ -31,7 +31,7 @@ set -euo pipefail
 # -----
 export MCIX_CMD_NAME="mcix datastage import"
 export MCIX_BIN_DIR="/usr/share/mcix/bin"
-export MCIX_LOG_DIR="/usr/share/mcix"
+export MCIX_LOG_DIR="/usr/share/mcix/logs"
 export MCIX_JUNIT_CMD="/usr/share/mcix/mcix-junit-to-summary"
 export MCIX_JUNIT_CMD_OPTIONS="--annotations"
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$MCIX_BIN_DIR"
