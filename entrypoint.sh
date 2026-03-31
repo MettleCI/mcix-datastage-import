@@ -151,7 +151,7 @@ write_step_summary() {
     {
       # Display the contents of the mcix command's log file. (collapsed by default)
       echo '<details>'
-      echo "<summary>Complete Command Log - ${MCIX_LOG_DIR}/cli.$(date +%F).log</summary>"
+      echo "<summary>${MCIX_CMD_NAME} log - ${MCIX_LOG_DIR}/cli.$(date +%F).log</summary>"
       echo # A blank line after the <summary> tag is required by GitHub to format the content correctly
       echo '```'
       cat "${MCIX_LOG_DIR}/cli.$(date +%F).log"
