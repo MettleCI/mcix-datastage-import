@@ -147,8 +147,6 @@ write_step_summary() {
       gh_warn "JUnit summarizer for '${MCIX_CMD_NAME}' failed" "Continuing without failing the action."
   fi
 
-  find / -name "cli.*.log" -ls
-
   if [[ -f "${MCIX_LOG_DIR}/cli.$(date +%F).log" ]]; then
     {
       # Display the contents of the mcix command's log file. (collapsed by default)
@@ -164,7 +162,7 @@ write_step_summary() {
       gh_warn "Log file for '${MCIX_CMD_NAME}' not found" "Continuing without failing the action."
   fi
 
-  for file in "$MCIX_LOG_DIR/exception.*.log"; do
+  for file in $MCIX_LOG_DIR/exception.*.log; do
     if [ -f "$file" ]; then
       {
         # Display the contents of the mcix command's log file. (collapsed by default)
@@ -177,7 +175,7 @@ write_step_summary() {
         echo '</details>'
       } >>"$GITHUB_STEP_SUMMARY"
     fi
-  done
+  done 2>/dev/null
 }
 
 # ---------
