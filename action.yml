@@ -58,6 +58,11 @@ inputs:
     required: false     # Required when -project not specified
     default: ""
 
+  report:
+    description: 'Path to output the import report'
+    required: false
+    default: "import-report.xml"
+
   additionalArgs:
     description: 'Additional raw arguments to append to the mcix command'
     required: false
@@ -76,4 +81,5 @@ runs:
     PARAM_ASSETS: ${{ inputs.assets }}
     PARAM_PROJECT: ${{ inputs.project }}
     PARAM_PROJECT_ID: ${{ inputs.project-id }}
+    PARAM_REPORT: ${{ inputs.report }}
     PARAM_ADDITIONAL_ARGS: ${{ inputs.additionalArgs }}

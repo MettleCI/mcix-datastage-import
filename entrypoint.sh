@@ -51,25 +51,23 @@ require PARAM_API_KEY "api-key"
 require PARAM_URL "url"
 require PARAM_USER "user"
 require PARAM_ASSETS "assets"
+require PARAM_REPORT "report"
 
 # Normalize Assets path
 ASSETS_PATH="$(resolve_workspace_path "${PARAM_ASSETS}")"
 
-# No current PARAM_REPORT provided by import, but likely to change
-# in future when we add junit output, so leaving this here as a reminder
-#   require PARAM_REPORT "report"
-#   REPORT_PATH="$(resolve_workspace_path "$PARAM_REPORT")"
-#   mkdir -p "$(dirname "$REPORT_PATH")"
-#   report_display="${REPORT_PATH#${GITHUB_WORKSPACE:-/github/workspace}/}"
+# Ensure PARAM_REPORT will always be /github/workspace/...
+PARAM_REPORT="$(resolve_workspace_path "$PARAM_REPORT")"
 
-# Temporary until 'mcix datastage import' provides us with a file
-REPORT_PATH="$(pwd)/${GITHUB_RUN_ID}.xml"
-cat <<'EOF' > "$REPORT_PATH"
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ExampleTestSuite" tests="1" failures="0" errors="0" skipped="0" time="0.001">
-    <testcase classname="ExampleTestClass" name="testSomething" time="0.001"/>
-</testsuite>
-EOF
+# Fail if the report already exists which may be the case if this action is
+# invoked multiple times with the same report path but no. This is to prevent multiple 
+# test runs from overwriting each other's reports and causing confusion.
+if [ -e "$PARAM_REPORT" ]; then
+  die "JUnit report already exists: $PARAM_REPORT. Each invocation must use a unique report path."
+else
+  mkdir -p "$(dirname "${PARAM_REPORT}")"
+  report_display="${PARAM_REPORT#${GITHUB_WORKSPACE:-/github/workspace}/}"
+fi
 
 # ------------------------
 # Build command to execute
@@ -84,6 +82,7 @@ set -- "$@" -api-key "$PARAM_API_KEY"
 set -- "$@" -url "$PARAM_URL"
 set -- "$@" -user "$PARAM_USER"
 set -- "$@" -assets "$ASSETS_PATH"
+set -- "$@" -report "$PARAM_REPORT"
 
 # Mutually exclusive project / project-id handling (safe with set -u)
 PROJECT="${PARAM_PROJECT:-}"
