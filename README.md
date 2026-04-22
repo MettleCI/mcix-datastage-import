@@ -44,6 +44,9 @@ See https://nextgen.mettleci.io/mettleci-cli/datastage-namespace/#datastage-impo
 <!-- BEGIN MCIX-ACTION-DOCS -->
 # MCIX Datastage Import
 
+> [!CAUTION]
+> This action is provided as a **technology preview** which may change, break, or disappear at any point and without warning.
+
 Import assets into an IBM DataStage project on IBM Software Hub (Cloud Pak) using the MettleCI MCIX CLI
 
 > Namespace: `datastage`<br>
