@@ -91,11 +91,9 @@ validate_project
 [ -n "$PROJECT" ]    && set -- "$@" -project "$PROJECT"
 [ -n "$PROJECT_ID" ] && set -- "$@" -project-id "$PROJECT_ID"
 
-# Optional boolean flags
-if [ "$(normalise_bool "${PARAM_INCLUDE_JOB_IN_TEST_NAME:-0}")" -eq 1 ]; then
-  set -- "$@" -include-job-in-test-name
-fi
+set -- "$@" -include-job-in-test-name
  
+# Optional boolean flags
 ADDITIONAL_ARGS="${PARAM_ADDITIONAL_ARGS:-}"
 if [ -n "$ADDITIONAL_ARGS" ]; then
   readarray -t args < <(printf "%s" "$ADDITIONAL_ARGS" | xargs -n 1)
