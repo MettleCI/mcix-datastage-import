@@ -78,7 +78,7 @@ jobs:
           # project: <optional>
           # project-id: <optional>
           # report: import-report.xml
-          # additionalArgs: <optional>
+          # additional-args: <optional>
 ```
 
 ---
@@ -101,7 +101,7 @@ jobs:
 | `project` | ❌ |  | DataStage project name |
 | `project-id` | ❌ |  | DataStage project id |
 | `report` | ❌ | import-report.xml | Path to output the import report |
-| `additionalArgs` | ❌ |  | Additional raw arguments to append to the mcix command |
+| `additional-args` | ❌ |  | Additional raw arguments to append to the mcix command |
 
 ---
 

@@ -63,7 +63,7 @@ inputs:
     required: false
     default: "import-report.xml"
 
-  additionalArgs:
+  additional-args:
     description: 'Additional raw arguments to append to the mcix command'
     required: false
 
@@ -82,4 +82,4 @@ runs:
     PARAM_PROJECT: ${{ inputs.project }}
     PARAM_PROJECT_ID: ${{ inputs.project-id }}
     PARAM_REPORT: ${{ inputs.report }}
-    PARAM_ADDITIONAL_ARGS: ${{ inputs.additionalArgs }}
+    PARAM_ADDITIONAL_ARGS: ${{ inputs.additional-args }}
