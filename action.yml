@@ -61,7 +61,7 @@ inputs:
   report:
     description: 'Path to output the import report'
     required: false
-    default: "import-report.xml"
+    default: "reports/import-report.xml"
 
   additional-args:
     description: 'Additional raw arguments to append to the mcix command'
