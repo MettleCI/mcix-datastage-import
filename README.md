@@ -80,7 +80,7 @@ jobs:
           # assets: <optional>
           # project: <optional>
           # project-id: <optional>
-          # report: import-report.xml
+          # report: reports/import-report.xml
           # additional-args: <optional>
 ```
 
@@ -103,7 +103,7 @@ jobs:
 | `assets` | ❌ |  | Path to the DataStage assets to import |
 | `project` | ❌ |  | DataStage project name |
 | `project-id` | ❌ |  | DataStage project id |
-| `report` | ❌ | import-report.xml | Path to output the import report |
+| `report` | ❌ | reports/import-report.xml | Path to output the import report |
 | `additional-args` | ❌ |  | Additional raw arguments to append to the mcix command |
 
 ---
