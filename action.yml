@@ -107,7 +107,7 @@ runs:
     - name: Assemble full image name
       id: image
       shell: bash
-      run: |
+      run: |#!/bin/bash
         REG=""
         IMG=""
         TAG=""
@@ -141,7 +141,7 @@ runs:
     - name: Determine private container registry credentials
       id: private_registry
       shell: bash
-      run: |
+      run: |#!/bin/bash
         if [[ "${{ inputs.registry-user }}" != "" ]]; then
           echo username="${{ inputs.registry-user }}">> $GITHUB_OUTPUT
           echo apikey="${{ inputs.registry-api-key }}">> $GITHUB_OUTPUT
@@ -158,7 +158,7 @@ runs:
         REG: ${{ steps.image.outputs.registry }}
         REG_USR: ${{ steps.private_registry.outputs.username }}
         REG_APIKEY: ${{ steps.private_registry.outputs.apikey }}
-      run: |
+      run: |#!/bin/bash
         #1. If credentials have been specified, the assumption is that the container registry is private and authentication is required
         if [[ "$REG_USR" != "" && "$REG_APIKEY" != "" ]]; then
           echo "Credentials have been specified. Attempting to log into a private or managed registry."
