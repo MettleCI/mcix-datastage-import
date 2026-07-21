@@ -196,11 +196,6 @@ trap write_return_code_and_summary EXIT
 # -------
 # Execute
 # -------
-# Check the repository has been checked out
-if [ ! -e "/github/workspace/.git" ] && [ ! -e "$ASSETS_PATH" ]; then
-  die "Repo contents not found in /github/workspace. Did you forget to run actions/checkout before this action?"
-fi
-
 # Prepare a file to capture output so we can detect "It has been logged (ID ...)" failures.
 tmp_out="$(mktemp)"
 cleanup() { rm -f "$tmp_out"; }
